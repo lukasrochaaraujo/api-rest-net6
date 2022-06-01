@@ -1,6 +1,6 @@
-﻿namespace Rest.Infrastrucutre.Identity.Authetication.Jwt;
+﻿namespace Rest.Infrastrucutre.Identity;
 
-public class JwtSettings
+public class AppSecrets
 {
     public string Secret { get; set; }
     public int ExpirationInHours { get; set; }

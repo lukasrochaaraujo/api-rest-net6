@@ -5,11 +5,11 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace Rest.Infrastrucutre.Identity.Authetication.Jwt;
+namespace Rest.Infrastrucutre.Identity;
 
-public static class JwtTokenGenerator
+public static class TokenGenerator
 {
-    public static string Generate(JwtSettings jwtSettings, IEnumerable<Claim> claims)
+    public static string Generate(AppSecrets jwtSettings, IEnumerable<Claim> claims)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.ASCII.GetBytes(jwtSettings.Secret);

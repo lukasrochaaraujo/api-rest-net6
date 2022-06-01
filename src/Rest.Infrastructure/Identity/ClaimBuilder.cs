@@ -1,18 +1,18 @@
 ﻿using System.Collections.Generic;
 using System.Security.Claims;
 
-namespace Rest.Infrastrucutre.Identity.Authetication.Jwt;
+namespace Rest.Infrastrucutre.Identity;
 
-public class JwtClaimBuilder
+public class ClaimBuilder
 {
     private readonly ICollection<Claim> _claims;
 
-    public JwtClaimBuilder()
+    public ClaimBuilder()
     {
         _claims = new List<Claim>();
     }
 
-    public JwtClaimBuilder AddClaim(string type, string value)
+    public ClaimBuilder AddClaim(string type, string value)
     {
         _claims.Add(new Claim(type, value));
         return this;

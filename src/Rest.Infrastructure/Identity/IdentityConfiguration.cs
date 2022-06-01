@@ -6,14 +6,14 @@ using System.Text;
 
 namespace Rest.Infrastrucutre.Identity.Authetication.Jwt
 {
-    public static class JwtConfiguration
+    public static class IdentityConfiguration
     {
-        public static void AddJwtAutenticationConfiguration(this IServiceCollection services, IConfiguration configuration)
+        public static void AddAutenticationConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
-            var appSecretSection = configuration.GetSection(nameof(JwtSettings));
-            services.Configure<JwtSettings>(appSecretSection);
+            var appSecretSection = configuration.GetSection(nameof(AppSecrets));
+            services.Configure<AppSecrets>(appSecretSection);
 
-            var appSecret = appSecretSection.Get<JwtSettings>();
+            var appSecret = appSecretSection.Get<AppSecrets>();
             var key = Encoding.ASCII.GetBytes(appSecret.Secret);
 
             services.AddAuthentication(options =>

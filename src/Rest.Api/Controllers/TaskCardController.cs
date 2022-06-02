@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Rest.Application.TaskCardApplication.CreateComment;
 using Rest.Application.TaskCardApplication.CreateTask;
+using Rest.Application.TaskCardApplication.GetAllByStatus;
 using Rest.Domain.TaskCardContext;
 using System.Net;
 using System.Threading.Tasks;
@@ -20,9 +21,16 @@ public class TaskCardController : ControllerBase
         _mediator = mediator;
     }
 
+    [HttpGet]
+    public async Task<IActionResult> GetAllByStatusAsync([FromQuery] GetAllByStatusQuery query)
+    {
+        var result = await _mediator.Send(query); ;
+        return Ok(result);
+    }
+
     [HttpPost]
     [ProducesResponseType(typeof(TaskCard), (int)HttpStatusCode.OK)]
-    public async Task<IActionResult> PostTask([FromBody] CreateTaskCommand createTaskCommand)
+    public async Task<IActionResult> PostTaskAsync([FromBody] CreateTaskCommand createTaskCommand)
     {
         var createdTask = await _mediator.Send(createTaskCommand);
         return Ok(createdTask);
@@ -30,7 +38,7 @@ public class TaskCardController : ControllerBase
 
     [HttpPost("{taskId}/comment")]
     [ProducesResponseType((int)HttpStatusCode.Created)]
-    public async Task<IActionResult> PostTaskComment([FromRoute] string taskId, [FromBody] CreateCommentCommand createCommentCommand)
+    public async Task<IActionResult> PostTaskCommentAsync([FromRoute] string taskId, [FromBody] CreateCommentCommand createCommentCommand)
     {
         createCommentCommand.TaskId = taskId;        
         await _mediator.Send(createCommentCommand);

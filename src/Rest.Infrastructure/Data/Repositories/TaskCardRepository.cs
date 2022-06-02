@@ -42,7 +42,7 @@ public class TaskCardRepository : ITaskCardRepository
 
         var filterToFind = filterBuilder.Eq(e => e.Id, taskCard.Id);
 
-        var updatedInfo = Builders<TaskCard>.Update.Set("Comments", taskCard.Comments);
+        var updatedInfo = Builders<TaskCard>.Update.Set(e => e.Comments, taskCard.Comments);
 
         return await _collection.FindOneAndUpdateAsync(filterToFind, updatedInfo);
     }

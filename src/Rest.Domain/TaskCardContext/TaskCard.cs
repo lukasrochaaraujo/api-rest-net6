@@ -28,26 +28,35 @@ public class TaskCard
 
     public void Start()
     {
-        Status = Status.InProgress;
-        Started = DateTime.Now;
+        if (Status == Status.Todo)
+        {
+            Status = Status.InProgress;
+            Started = DateTime.Now;
+        }
     }
 
     public void Cancel(string comment, string commentedBy)
     {
-        Status = Status.Cancelled;
-        Finished = DateTime.Now;
-        AddComment(comment, commentedBy);
+        if (Status != Status.Done || Status != Status.Cancelled)
+        {
+            Status = Status.Cancelled;
+            Finished = DateTime.Now;
+            AddComment(comment, commentedBy);
+        }
     }
 
     public void Done()
     {
-        Status = Status.Done;
-        Finished = DateTime.Now;
+        if (Status != Status.Done && Status == Status.InProgress)
+        {
+            Status = Status.Done;
+            Finished = DateTime.Now;
+        }
     }
 
     public void AddComment(string comment, string commentedBy)
     {
-        if (!string.IsNullOrWhiteSpace(comment))
+        if (!string.IsNullOrWhiteSpace(comment) && !string.IsNullOrWhiteSpace(commentedBy))
         {
             _comments.Add(new TaskComment(comment, commentedBy));
         }

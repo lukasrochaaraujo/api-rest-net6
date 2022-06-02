@@ -1,10 +1,9 @@
-using Rest.Domain.Common;
 using System;
 using System.Collections.Generic;
 
 namespace Rest.Domain.TaskCardContext;
 
-public class TaskCard : AuditableEntity
+public class TaskCard
 {
     public long Id { get; private set; }
     public string Title { get; private set; }
@@ -13,6 +12,7 @@ public class TaskCard : AuditableEntity
     public Priority Priority { get; private set; }
     public IReadOnlyCollection<TaskComment> Comments { get => (IReadOnlyCollection<TaskComment>)_comments; }
     private ICollection<TaskComment> _comments;
+    public DateTime Created { get; private set; }
     public DateTime Started { get; private set; }
     public DateTime Finished { get; private set; }
 
@@ -22,6 +22,7 @@ public class TaskCard : AuditableEntity
         Description = description;
         Status = Status.Todo;
         Priority = priority;
+        Created = DateTime.Now;
         _comments = new List<TaskComment>();
     }
 

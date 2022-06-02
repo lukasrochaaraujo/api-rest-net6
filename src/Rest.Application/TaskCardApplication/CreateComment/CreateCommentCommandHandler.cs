@@ -18,8 +18,11 @@ public class CreateCommentCommandHandler : IRequestHandler<CreateCommentCommand>
     {
         //todo: validation
         var taskCard = await _taskCardRepository.FindAllByIdAsync(command.TaskId);
-        taskCard.AddComment(command.Comment, command.UserName);
-        await _taskCardRepository.UpdateAsync(taskCard);
+        if (taskCard != null)
+        {
+            taskCard.AddComment(command.Comment, command.UserName);
+            await _taskCardRepository.UpdateAsync(taskCard);
+        }
         return Unit.Value;
     }
 }

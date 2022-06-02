@@ -5,7 +5,7 @@ namespace Rest.Domain.TaskCardContext;
 
 public class TaskCard
 {
-    public long Id { get; private set; }
+    public string Id { get; private set; }
     public string Title { get; private set; }
     public string Description { get; private set; }
     public Status Status { get; private set; }
@@ -13,8 +13,8 @@ public class TaskCard
     public IReadOnlyCollection<TaskComment> Comments { get => (IReadOnlyCollection<TaskComment>)_comments; }
     private ICollection<TaskComment> _comments;
     public DateTime Created { get; private set; }
-    public DateTime Started { get; private set; }
-    public DateTime Finished { get; private set; }
+    public DateTime? Started { get; private set; }
+    public DateTime? Finished { get; private set; }
 
     public TaskCard(string title, string description, Priority priority)
     {

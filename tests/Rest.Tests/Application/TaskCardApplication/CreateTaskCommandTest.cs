@@ -25,7 +25,7 @@ namespace Rest.Tests.Application.TaskCardApplication
         }
 
         [Fact]
-        public async Task ValidCreateCommandWithExistingTask_MustAddNewComment()
+        public async Task ValidCreateCommand_MustCreateNewTaskCard()
         {
             //arrange
             var command = new CreateTaskCommand

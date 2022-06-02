@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Rest.Infrastrucutre.Identity.Authetication.Jwt
 {
-    public static class IdentityConfiguration
+    public static class DependencyInjection
     {
         public static void AddAutenticationConfiguration(this IServiceCollection services, IConfiguration configuration)
         {

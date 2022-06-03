@@ -15,6 +15,6 @@ public static class DependencyInjection
         services.AddScoped<ITaskCardRepository, TaskCardRepository>();
 
         //todo: move configuration to appsettings approach
-        services.AddSingleton<IMongoClient>(sp => new MongoClient("mongodb://172.27.67.20:27017"));
+        services.AddSingleton<IMongoClient>(sp => new MongoClient("mongodb://172.24.58.128:27017"));
     }
 }

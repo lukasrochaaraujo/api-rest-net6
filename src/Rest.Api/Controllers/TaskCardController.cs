@@ -1,10 +1,9 @@
-using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Rest.Application.TaskCardApplication.CreateComment;
 using Rest.Application.TaskCardApplication.CreateTask;
 using Rest.Application.TaskCardApplication.GetAllByStatus;
 using Rest.Domain.TaskCardContext;
-using System.Net;
 using System.Threading.Tasks;
 
 namespace Rest.Api.Controllers;
@@ -12,36 +11,24 @@ namespace Rest.Api.Controllers;
 [ApiController]
 [Route("tasks")]
 [ApiVersion("1")]
-public class TaskCardController : ControllerBase
+public class TaskCardController : ApiControllerBase
 {
-    private readonly IMediator _mediator;
-
-    public TaskCardController(IMediator mediator)
-    {
-        _mediator = mediator;
-    }
-
     [HttpGet]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(TaskCard), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllByStatusAsync([FromQuery] GetAllByStatusQuery query)
-    {
-        var result = await _mediator.Send(query); ;
-        return Ok(result);
-    }
+        => await SendQuery(query);
 
     [HttpPost]
-    [ProducesResponseType(typeof(TaskCard), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(TaskCard), StatusCodes.Status201Created)]
     public async Task<IActionResult> PostTaskAsync([FromBody] CreateTaskCommand createTaskCommand)
-    {
-        var createdTask = await _mediator.Send(createTaskCommand);
-        return Ok(createdTask);
-    }
+        => await SendCommand(createTaskCommand);
 
     [HttpPost("{taskId}/comment")]
-    [ProducesResponseType((int)HttpStatusCode.Created)]
+    [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<IActionResult> PostTaskCommentAsync([FromRoute] string taskId, [FromBody] CreateCommentCommand createCommentCommand)
     {
         createCommentCommand.TaskId = taskId;        
-        await _mediator.Send(createCommentCommand);
-        return StatusCode((int)HttpStatusCode.Created);
+        return await SendCommand(createCommentCommand);
     }
 }

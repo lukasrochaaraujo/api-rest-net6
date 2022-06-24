@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace Rest.Infrastrucutre.Cache;
+namespace Rest.Infrastructure.Cache;
 
 public interface ICacheService
 {

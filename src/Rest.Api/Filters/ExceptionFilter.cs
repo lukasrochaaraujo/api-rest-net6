@@ -1,12 +1,10 @@
-﻿using FluentValidation;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
 using Rest.Api.Models;
 using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 
 namespace Rest.Api.Filters;
 
@@ -23,30 +21,7 @@ public class ExceptionFilter : IExceptionFilter
     public void OnException(ExceptionContext context)
     {
         context.ExceptionHandled = true;
-
-        switch (context.Exception)
-        {
-            case ValidationException _:
-                CreateBadRequest(context);
-                break;
-            default:
-                CreateInternalServerError(context);
-                break;
-        }      
-    }
-
-    private void CreateBadRequest(ExceptionContext context)
-    {
-        var validationEx = (ValidationException)context.Exception;
-
-        var validationFailureList = validationEx.Errors
-            .Select(e => new ValidationFailureDetail
-            {
-                PropertyName = e.PropertyName,
-                Message = e.ErrorMessage
-            });
-
-        context.Result = new JsonResult(validationFailureList);
+        CreateInternalServerError(context);
     }
 
     private void CreateInternalServerError(ExceptionContext context)

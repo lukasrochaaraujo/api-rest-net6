@@ -1,28 +1,31 @@
 using System.Threading;
 using System.Threading.Tasks;
-using MediatR;
 using Rest.Domain.TaskCardContext;
+using Rest.Infrastructure.Messaging;
 
 namespace Rest.Application.TaskCardApplication.CreateComment;
 
-public class CreateCommentCommandHandler : IRequestHandler<CreateCommentCommand>
+public class CreateCommentCommandHandler : MessageHandler<CreateCommentCommand, object>
 {
     private readonly ITaskCardRepository _taskCardRepository;
 
-    public CreateCommentCommandHandler(ITaskCardRepository taskCardRepository)
+    public CreateCommentCommandHandler(ITaskCardRepository taskCardRepository) : base()
     {
         _taskCardRepository = taskCardRepository;
     }
 
-    public async Task<Unit> Handle(CreateCommentCommand command, CancellationToken cancellationToken)
+    public override async Task<MessageResponse<object>> Handle(CreateCommentCommand command, CancellationToken cancellationToken)
     {
-        //todo: validation
         var taskCard = await _taskCardRepository.FindAllByIdAsync(command.TaskId);
-        if (taskCard != null)
+        if (taskCard == null)
         {
-            taskCard.AddComment(command.Comment, command.UserName);
-            await _taskCardRepository.UpdateAsync(taskCard);
+            AddError($"task {command.TaskId} not exists.");
+            return Response();
         }
-        return Unit.Value;
+
+        taskCard.AddComment(command.Comment, command.UserName);
+        await _taskCardRepository.UpdateAsync(taskCard);
+
+        return Response();
     }
 }

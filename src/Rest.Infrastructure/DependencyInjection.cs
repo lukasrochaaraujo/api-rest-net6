@@ -1,14 +1,32 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using MongoDB.Driver;
+using Rest.Domain.TaskCardContext;
+using Rest.Infrastructure.Mediator;
+using Rest.Infrastructure.Data.Mappings;
+using Rest.Infrastructure.Data.Repositories;
+using Rest.Infrastructure.Identity;
+using System;
 using System.Text;
 
-namespace Rest.Infrastrucutre.Identity.Authetication.Jwt
+namespace Rest.Infrastructure
 {
     public static class DependencyInjection
     {
-        public static void AddAutenticationConfiguration(this IServiceCollection services, IConfiguration configuration)
+        public static void AddInfrastrucureData(this IServiceCollection services)
+        {
+            TaskCardContextMap.Map();
+
+            services.AddScoped<ITaskCardRepository, TaskCardRepository>();
+
+            //todo: move configuration to appsettings approach
+            services.AddSingleton<IMongoClient>(sp => new MongoClient("mongodb://172.23.157.243:27017"));
+        }
+
+        public static void AddInfrastrucureIdentity(this IServiceCollection services, IConfiguration configuration)
         {
             var appSecretSection = configuration.GetSection(nameof(AppSecrets));
             services.Configure<AppSecrets>(appSecretSection);
@@ -35,6 +53,14 @@ namespace Rest.Infrastrucutre.Identity.Authetication.Jwt
                             ValidIssuer = appSecret.Issuer
                         };
                     });
+        }
+
+        public static void AddInfrastrucureMediator(this IServiceCollection services)
+        {
+            var applicationAssembly = AppDomain.CurrentDomain.Load("Rest.Application");
+            var InfrastructureAssembly = AppDomain.CurrentDomain.Load("Rest.Infrastructure");
+            services.AddMediatR(applicationAssembly, InfrastructureAssembly);
+            services.AddScoped<IMediatorHandler, MediatorHandler>();
         }
     }
 }

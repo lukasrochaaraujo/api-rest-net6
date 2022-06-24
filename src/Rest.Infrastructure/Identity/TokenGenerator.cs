@@ -5,7 +5,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace Rest.Infrastrucutre.Identity;
+namespace Rest.Infrastructure.Identity;
 
 public static class TokenGenerator
 {

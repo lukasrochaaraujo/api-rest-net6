@@ -1,12 +1,12 @@
-﻿using MediatR;
-using Rest.Domain.TaskCardContext;
+﻿using Rest.Domain.TaskCardContext;
+using Rest.Infrastructure.Messaging;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Rest.Application.TaskCardApplication.GetAllByStatus;
 
-public class GetAllByStatusQueryHandler : IRequestHandler<GetAllByStatusQuery, IEnumerable<TaskCard>>
+public class GetAllByStatusQueryHandler : MessageHandler<GetAllByStatusQuery, IEnumerable<TaskCard>>
 {
     private readonly ITaskCardRepository _taskCardRepository;
 
@@ -15,8 +15,9 @@ public class GetAllByStatusQueryHandler : IRequestHandler<GetAllByStatusQuery, I
         _taskCardRepository = taskCardRepository;
     }
 
-    public async Task<IEnumerable<TaskCard>> Handle(GetAllByStatusQuery query, CancellationToken cancellationToken)
+    public override async Task<MessageResponse<IEnumerable<TaskCard>>> Handle(GetAllByStatusQuery command, CancellationToken cancellationToken)
     {
-        return await _taskCardRepository.GetAllByStatusAsync(query.Status);
+        var result = await _taskCardRepository.GetAllByStatusAsync(command.Status);
+        return Response(result);
     }
 }

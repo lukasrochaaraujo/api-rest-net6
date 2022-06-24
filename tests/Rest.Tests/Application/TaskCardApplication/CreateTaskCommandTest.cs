@@ -1,5 +1,4 @@
 ﻿using Bogus;
-using MediatR;
 using Moq;
 using Rest.Application.TaskCardApplication.CreateTask;
 using Rest.Domain.TaskCardContext;
@@ -15,7 +14,7 @@ namespace Rest.Tests.Application.TaskCardApplication
     {
         private readonly Faker _faker;
         private readonly Mock<ITaskCardRepository> _taskCardRepository;
-        private readonly IRequestHandler<CreateTaskCommand, TaskCard> _commandHandler;
+        private readonly CreateTaskCommandHandler _commandHandler;
 
         public CreateTaskCommandTest()
         {
@@ -32,23 +31,23 @@ namespace Rest.Tests.Application.TaskCardApplication
             {
                 Title = _faker.Lorem.Sentence(),
                 Description = _faker.Lorem.Text(),
-                Priority = (Priority)_faker.Random.Int(0,3)
+                Priority = (Priority)_faker.Random.Int(0, 3)
             };
             _taskCardRepository.Setup(r => r.IncludeAsync(It.IsAny<TaskCard>()))
                 .ReturnsAsync(new TaskCard(command.Title, command.Description, command.Priority));
 
             //act
-            var createdTaskCard = await _commandHandler.Handle(command, new CancellationToken());
+            var createdTaskCardResponse = await _commandHandler.Handle(command, new CancellationToken());
 
             //assert
             _taskCardRepository.Verify(r => r.IncludeAsync(It.IsAny<TaskCard>()), Times.Once);
-            createdTaskCard.ShouldNotBeNull();
-            createdTaskCard.Title.ShouldBe(command.Title);
-            createdTaskCard.Description.ShouldBe(command.Description);
-            createdTaskCard.Priority.ShouldBe(command.Priority);
-            createdTaskCard.Status.ShouldBe(Status.Todo);
-            createdTaskCard.Created.ShouldBeGreaterThan(DateTime.MinValue);
-            createdTaskCard.Comments.ShouldBeEmpty();
+            createdTaskCardResponse.ShouldNotBeNull();
+            createdTaskCardResponse.Result.Title.ShouldBe(command.Title);
+            createdTaskCardResponse.Result.Description.ShouldBe(command.Description);
+            createdTaskCardResponse.Result.Priority.ShouldBe(command.Priority);
+            createdTaskCardResponse.Result.Status.ShouldBe(Status.Todo);
+            createdTaskCardResponse.Result.Created.ShouldBeGreaterThan(DateTime.MinValue);
+            createdTaskCardResponse.Result.Comments.ShouldBeEmpty();
         }
     }
 }

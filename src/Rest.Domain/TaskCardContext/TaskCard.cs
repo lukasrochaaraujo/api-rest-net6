@@ -10,8 +10,7 @@ public class TaskCard
     public string Description { get; private set; }
     public Status Status { get; private set; }
     public Priority Priority { get; private set; }
-    public IReadOnlyCollection<TaskComment> Comments { get => (IReadOnlyCollection<TaskComment>)_comments; }
-    private ICollection<TaskComment> _comments;
+    public ICollection<TaskComment> Comments { get; private set; }
     public DateTime Created { get; private set; }
     public DateTime? Started { get; private set; }
     public DateTime? Finished { get; private set; }
@@ -23,7 +22,7 @@ public class TaskCard
         Status = Status.Todo;
         Priority = priority;
         Created = DateTime.Now;
-        _comments = new List<TaskComment>();
+        Comments = new List<TaskComment>();
     }
 
     public void Start()
@@ -58,7 +57,7 @@ public class TaskCard
     {
         if (!string.IsNullOrWhiteSpace(comment) && !string.IsNullOrWhiteSpace(commentedBy))
         {
-            _comments.Add(new TaskComment(comment, commentedBy));
+            Comments.Add(new TaskComment(comment, commentedBy));
         }
     }
 }

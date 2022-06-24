@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Security.Claims;
 
-namespace Rest.Infrastrucutre.Identity;
+namespace Rest.Infrastructure.Identity;
 
 public class ClaimBuilder
 {

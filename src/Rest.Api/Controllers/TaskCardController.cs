@@ -17,18 +17,18 @@ public class TaskCardController : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(TaskCard), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllByStatusAsync([FromQuery] GetAllByStatusQuery query)
-        => await SendQuery(query);
+        => await SendQuery(query).ConfigureAwait(false);
 
     [HttpPost]
     [ProducesResponseType(typeof(TaskCard), StatusCodes.Status201Created)]
     public async Task<IActionResult> PostTaskAsync([FromBody] CreateTaskCommand createTaskCommand)
-        => await SendCommand(createTaskCommand);
+        => await SendCommand(createTaskCommand).ConfigureAwait(false);
 
     [HttpPost("{taskId}/comment")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<IActionResult> PostTaskCommentAsync([FromRoute] string taskId, [FromBody] CreateCommentCommand createCommentCommand)
     {
         createCommentCommand.TaskId = taskId;        
-        return await SendCommand(createCommentCommand);
+        return await SendCommand(createCommentCommand).ConfigureAwait(false);
     }
 }

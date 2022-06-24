@@ -1,4 +1,4 @@
-﻿namespace Rest.Infrastrucutre.Identity;
+﻿namespace Rest.Infrastructure.Identity;
 
 public class AppSecrets
 {

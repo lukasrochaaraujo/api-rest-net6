@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
-namespace Rest.Infrastrucutre.Identity;
+namespace Rest.Infrastructure.Identity;
 
 public class ClaimsAuthorization : TypeFilterAttribute
 {

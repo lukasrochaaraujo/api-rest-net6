@@ -4,8 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Rest.Api.Configurations;
 using Rest.Api.Filters;
-using Rest.Application;
-using Rest.Infrastrucutre.Data;
+using Rest.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,8 +13,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddApiVersioningConfiguration();
 builder.Services.AddSwaggerConfiguration();
 builder.Services.AddHealthChecks();
-builder.Services.AddApplication();
 builder.Services.AddInfrastrucureData();
+builder.Services.AddInfrastrucureMediator();
 
 var app = builder.Build();
 

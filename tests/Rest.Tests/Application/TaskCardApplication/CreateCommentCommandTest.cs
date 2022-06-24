@@ -1,5 +1,4 @@
 ﻿using Bogus;
-using MediatR;
 using Moq;
 using Rest.Application.TaskCardApplication.CreateComment;
 using Rest.Domain.TaskCardContext;
@@ -14,7 +13,7 @@ namespace Rest.Tests.Application.TaskCardApplication
     {
         private readonly Faker _faker;
         private readonly Mock<ITaskCardRepository> _taskCardRepository;
-        private readonly IRequestHandler<CreateCommentCommand> _commandHandler;
+        private readonly CreateCommentCommandHandler _commandHandler;
 
         public CreateCommentCommandTest()
         {

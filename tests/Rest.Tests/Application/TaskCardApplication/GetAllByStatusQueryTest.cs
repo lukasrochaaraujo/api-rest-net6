@@ -1,5 +1,4 @@
 ﻿using Bogus;
-using MediatR;
 using Moq;
 using Rest.Application.TaskCardApplication.GetAllByStatus;
 using Rest.Domain.TaskCardContext;
@@ -15,7 +14,7 @@ public class GetAllByStatusQueryTest
 {
     private readonly Faker _faker;
     private readonly Mock<ITaskCardRepository> _taskCardRepository;
-    private readonly IRequestHandler<GetAllByStatusQuery, IEnumerable<TaskCard>> _queryHandler;
+    private readonly GetAllByStatusQueryHandler _queryHandler;
 
     public GetAllByStatusQueryTest()
     {
@@ -34,10 +33,10 @@ public class GetAllByStatusQueryTest
             .ReturnsAsync(taskCardsReturn);
 
         //act
-        var tasks = await _queryHandler.Handle(new GetAllByStatusQuery { Status = status }, CancellationToken.None);
+        var queryResult = await _queryHandler.Handle(new GetAllByStatusQuery { Status = status }, CancellationToken.None);
 
         //assert
-        tasks.ShouldNotBeEmpty();
+        queryResult.Result.ShouldNotBeEmpty();
         _taskCardRepository.Verify(r => r.GetAllByStatusAsync(It.Is<Status>(s => s == status)), Times.Once);
     }
 }

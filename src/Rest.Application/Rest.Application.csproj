@@ -5,14 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="11.0.2" />
-    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.0.2" />
-    <PackageReference Include="MediatR" Version="10.0.1" />
-    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
+    <PackageReference Include="FluentValidation" Version="11.0.3" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Rest.Domain\Rest.Domain.csproj" />
+    <ProjectReference Include="..\Rest.Infrastructure\Rest.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,24 +1,23 @@
 using System.Threading;
 using System.Threading.Tasks;
-using MediatR;
 using Rest.Domain.TaskCardContext;
+using Rest.Infrastructure.Messaging;
 
 namespace Rest.Application.TaskCardApplication.CreateTask;
 
-public class CreateTaskCommandHandler : IRequestHandler<CreateTaskCommand, TaskCard>
+public class CreateTaskCommandHandler : MessageHandler<CreateTaskCommand, TaskCard>
 {
     private readonly ITaskCardRepository _taskCardRepository;
 
-    public CreateTaskCommandHandler(ITaskCardRepository taskCardRepository)
+    public CreateTaskCommandHandler(ITaskCardRepository taskCardRepository) : base()
     {
         _taskCardRepository = taskCardRepository;
     }
 
-    public async Task<TaskCard> Handle(CreateTaskCommand command, CancellationToken cancellationToken)
+    public override async Task<MessageResponse<TaskCard>> Handle(CreateTaskCommand command, CancellationToken cancellationToken)
     {
-        //todo: validation
         var taskCard = new TaskCard(command.Title, command.Description, command.Priority);
         taskCard = await _taskCardRepository.IncludeAsync(taskCard);
-        return taskCard;
+        return Response(taskCard);
     }
 }

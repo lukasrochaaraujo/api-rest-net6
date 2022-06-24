@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using System.Linq;
 using System.Security.Claims;
 
-namespace Rest.Infrastrucutre.Identity;
+namespace Rest.Infrastructure.Identity;
 
 public class ClaimsAuthorizationFilter : IAuthorizationFilter
 {
